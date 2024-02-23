@@ -1,9 +1,16 @@
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+// Плиз добавляй эти стили, они пригодятся для браузера safari, чтобы страница не прыгала :)
+// html {
+//   position: fixed;
+//   width: 100%;
+//   height: 100%;
+//   overflow: hidden;
+// }
 
 body {
   font-family: "Roboto", sans-serif;
@@ -24,12 +31,26 @@ li {
   // padding-left: calc(50% - 555px);
   // padding-right: calc(50% - 555px);
   padding-inline: max(50% - 555px, 39px);
+
+  // Для контейнеров мы записываем такие стили, например в нашем макете максимальная ширина
+  // равна 1110px, а на мобилке оступы по бокам по 40px, то стили пишем такие
+  // max-width: 1190px; // сразу прибавляем отступы по бокам которые в общем дают 80px
+  // width: 100%;
+  // padding: 0 40px;
+  // margin: 0 auto;
+  // overflow: hidden;
+  // и у нас контейнер адаптирован до мобилки
 }
+
+// Есть более легкий способ для такой шапки на мой взгляд :). Ты могла сделать header и top отдельно,
+// показывать top когда мобильная версия
+// и прятать logo и search в header когда мобильная версия
+// но твой вариант тоже вполне рабочий
 .top {
   background-color: rgb(255, 255, 255);
   // height: 700px;
   &__menu {
-    display: grid;
+    display: grid; //
     padding-block: 28px;
     border-bottom: 1px solid #dfdfdf;
   }
@@ -100,7 +121,6 @@ li {
     flex-direction: column;
     justify-content: center;
     gap: 39px;
-    
   }
   &__title {
     color: rgb(76, 88, 102);
@@ -116,7 +136,7 @@ li {
     line-height: 150%;
     width: 445px;
   }
-  
+
   &__button {
     width: 255px;
     height: 70px;
@@ -144,16 +164,15 @@ li {
     background: rgb(73, 70, 180);
     color: white;
   }
-  &__img{
+  &__img {
     background-image: url(../img/simpleAdd.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position:center 0 ;
+    background-position: center 0;
     width: 540px;
     margin-top: 60px;
     aspect-ratio: 540/560;
   }
-  
 }
 .study {
   background: rgb(235, 235, 235);
@@ -181,7 +200,7 @@ li {
     display: flex;
     flex-direction: column;
   }
-  &__img{
+  &__img {
     // aspect-ratio: 730/564;
     width: max(min(100% - 380px, 730px), 330px);
   }
@@ -198,7 +217,7 @@ li {
     line-height: 150%;
     max-width: 350px;
     width: 100%;
-    &_big{
+    &_big {
       max-width: 510px;
     }
   }
@@ -216,7 +235,7 @@ li {
     gap: 30px;
     padding-top: 91px;
   }
-  .study__description{
+  .study__description {
     width: 350px;
   }
 }
@@ -249,35 +268,33 @@ li {
   &__item a:active {
     color: rgb(73, 70, 180);
   }
-  &__view:nth-child(1){
+  &__view:nth-child(1) {
     background-image: url(../img/product1.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position:center;
+    background-position: center;
   }
-  &__view:nth-child(2){
+  &__view:nth-child(2) {
     background-image: url(../img/product2.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position:center;
-
+    background-position: center;
   }
-  &__view:nth-child(3){
+  &__view:nth-child(3) {
     background-image: url(../img/product3.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position:center;
-
+    background-position: center;
   }
-  &__view:nth-child(4){
+  &__view:nth-child(4) {
     background-image: url(../img/product4.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position:center;
+    background-position: center;
     height: 180px;
     width: 330px;
   }
-  &__view{
+  &__view {
     height: 180px;
     width: 330px;
   }
@@ -323,7 +340,6 @@ li {
     width: 255px;
     height: 135px;
   }
-  
 }
 .product {
   display: flex;
@@ -422,6 +438,55 @@ li {
   }
 }
 
+// вот такой вариант добавления адаптива запутанный, можно легко ошибиться
+// хороашая практика записываит адаптив внутри каждого элемента по отдельности
+
+/// я в группу скидывал миксины для адаптива
+//Вот файл mixin.scss для адаптива. А то у Саадуева Омара были сложности с поиском таких миксинов. Эти точки должны хватить вам, не нужно плодить множество точек, потом проект сложно поддерживать.
+// adaptive
+@mixin _desktop {
+  @media (max-width: 960px) {
+    @content;
+  }
+}
+@mixin _tablet {
+  @media (max-width: 850px) {
+    @content;
+  }
+}
+@mixin _phablet {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+@mixin _mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+// изучи чем отличается max-width от min-width в адаптиве и все поймешь. 
+// _desktop - означает что мы переступили дексктопную версию
+
+// Пример работы таких миксинов
+
+.top__header {
+  font-size: 18px;
+  line-height: 1.6;
+
+  // получает что от _phablet = 600 до _desktop = 960px будет такие стили
+  @include _desktop {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+   // получает что от _phablet = 600 до нижних точек (если нижние точки не объявлены до конца)
+  @include _phablet {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+}
+
 // // table
 @media (max-width: 768px) {
   .container {
@@ -436,8 +501,8 @@ li {
     grid-row-end: 1;
     text-align: left;
     padding: 11px 0 11px 0;
-}
- .top__header {
+  }
+  .top__header {
     display: flex;
     justify-content: space-between;
     padding: 1em 0em;
@@ -460,130 +525,120 @@ li {
     transition: all 0.5s;
     padding: 11px 0 11px 0;
   }
-  .top__content{
-    gap:30px;
+  .top__content {
+    gap: 30px;
   }
-  .top__info{
+  .top__info {
     height: 470px;
   }
   .top__menu {
-        display: grid;
-        padding: 0;
-    }
-    .top__title {
-      font-size: 50px;
-      width: 390px;
-    }
-    .top__text{
-      width: 390px;
-    }
-    
-    
-    .study__levels{
-      display: flex;
-      flex-direction: column;
-    }
-    .study__name{
-      width: 330px;
-      font-size: 30px;
-    }
-    .study__img{
-        max-width: 330px;
+    display: grid;
+    padding: 0;
+  }
+  .top__title {
+    font-size: 50px;
+    width: 390px;
+  }
+  .top__text {
+    width: 390px;
+  }
 
-    }
+  .study__levels {
+    display: flex;
+    flex-direction: column;
+  }
+  .study__name {
+    width: 330px;
+    font-size: 30px;
+  }
+  .study__img {
+    max-width: 330px;
+  }
 
-    .study__text{
-      max-width: 210px;
-      &_big{
-        max-width: 510px;
-      }
-    }
-    .catalog{
-      height: 1048px;
-      flex-wrap: wrap;
-    
-    }
-    .catalog__item {
-      width: calc(50% - 15px);
-    }
-    .catalog__item img{
-      width: 100%;
-      height: 180px;
-      background-color:rgb(235, 235, 235);
-    }
-    .company{
-      height: 200px;
-    }
-     .company__logo{
-      width: 150px;
-      height: 80px;
-
-     }
-    .company__logo img:nth-child(1){
-      width:115.88px;
-      height:32.59px;
-    }
-    .company__logo img:nth-child(2){
-      width:109.41px;
-      height:31.41px;
-    }
-    .company__logo img:nth-child(3){
-      width:132.35px;
-      height:12.44px;
-    }
-    .company__logo img:nth-child(4){
-      width:122.94px;
-      height:15.41px;
+  .study__text {
+    max-width: 210px;
+    &_big {
+      max-width: 510px;
     }
   }
+  .catalog {
+    height: 1048px;
+    flex-wrap: wrap;
+  }
+  .catalog__item {
+    width: calc(50% - 15px);
+  }
+  .catalog__item img {
+    width: 100%;
+    height: 180px;
+    background-color: rgb(235, 235, 235);
+  }
+  .company {
+    height: 200px;
+  }
+  .company__logo {
+    width: 150px;
+    height: 80px;
+  }
+  .company__logo img:nth-child(1) {
+    width: 115.88px;
+    height: 32.59px;
+  }
+  .company__logo img:nth-child(2) {
+    width: 109.41px;
+    height: 31.41px;
+  }
+  .company__logo img:nth-child(3) {
+    width: 132.35px;
+    height: 12.44px;
+  }
+  .company__logo img:nth-child(4) {
+    width: 122.94px;
+    height: 15.41px;
+  }
+}
 
 // // table
 
 @media (max-width: 510px) {
-    .container {
-      padding-inline: max(50% - 255px, 32px);
-    }
-   
-     .top__title{
-      font-size: 38px;
-      max-width: 287px;
-     }
-     .top__text{
-      font-size: 18px;
-      max-width: 287px;
-     }
-
-
-    .company{
-      flex-wrap: wrap;
-    }
-    .study{
-      height: unset;
-    }
-    .study__item{
-      flex-wrap: wrap;
-    }
-    .study__description{
-      margin-bottom: 60px;
-    }
+  .container {
+    padding-inline: max(50% - 255px, 32px);
   }
-    // .company__logo img{
-    //   height:unset;
-    //   height: unset;
-    // }
-    // .company__logo{
-    //   height:unset;
-    //   height: unset;
-    // }
 
+  .top__title {
+    font-size: 38px;
+    max-width: 287px;
+  }
+  .top__text {
+    font-size: 18px;
+    max-width: 287px;
+  }
 
-
+  .company {
+    flex-wrap: wrap;
+  }
+  .study {
+    height: unset;
+  }
+  .study__item {
+    flex-wrap: wrap;
+  }
+  .study__description {
+    margin-bottom: 60px;
+  }
+}
+// .company__logo img{
+//   height:unset;
+//   height: unset;
+// }
+// .company__logo{
+//   height:unset;
+//   height: unset;
+// }
 
 // @media (min-width: 510px) {
 //     .container {
 //       padding-inline: max(50% - 144px, 16px);
 //     }
-
-
 
 // }
